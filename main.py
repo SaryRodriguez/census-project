@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 import pickle
-import numpy as np
 import pandas as pd
 from model.train_model import process_data, inference, CAT_FEATURES
 
@@ -11,6 +10,7 @@ with open("model/model.pkl", "rb") as f:
     model = pickle.load(f)
 with open("model/encoder.pkl", "rb") as f:
     encoder = pickle.load(f)
+
 
 class CensusData(BaseModel):
     age: int
@@ -49,9 +49,11 @@ class CensusData(BaseModel):
             }
         }
 
+
 @app.get("/")
 def root():
     return {"message": "Welcome to the Census Salary Prediction API!"}
+
 
 @app.post("/predict")
 def predict(data: CensusData):
@@ -65,7 +67,8 @@ def predict(data: CensusData):
         "salary": "<=50K"  # placeholder
     }
     df = pd.DataFrame([input_dict])
-    X, _, _, _ = process_data(df, CAT_FEATURES, "salary", training=False, encoder=encoder)
+    X, _, _, _ = process_data(df, CAT_FEATURES, "salary", training=False,
+                              encoder=encoder)
     pred = inference(model, X)[0]
     label = ">50K" if pred == 1 else "<=50K"
     return {"prediction": label}

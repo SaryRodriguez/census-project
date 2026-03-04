@@ -11,9 +11,11 @@ CAT_FEATURES = [
     "relationship", "race", "sex", "native-country"
 ]
 
+
 def load_data(path):
     df = pd.read_csv(path)
     return df
+
 
 def process_data(X, categorical_features, label, training=True, encoder=None, lb=None):
     y = X[label].map({"<=50K": 0, ">50K": 1}).values
@@ -31,10 +33,12 @@ def process_data(X, categorical_features, label, training=True, encoder=None, lb
 
     return X.values, y, encoder, None
 
+
 def train_model(X_train, y_train):
     model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X_train, y_train)
     return model
+
 
 def compute_model_metrics(y, preds):
     precision = precision_score(y, preds, zero_division=1)
@@ -42,10 +46,13 @@ def compute_model_metrics(y, preds):
     fbeta = fbeta_score(y, preds, beta=1, zero_division=1)
     return precision, recall, fbeta
 
+
 def inference(model, X):
     return model.predict(X)
 
-def performance_on_slices(model, df, feature, categorical_features, encoder, label="salary"):
+
+def performance_on_slices(model, df, feature, categorical_features,
+                          encoder, label="salary"):
     results = []
     for value in df[feature].unique():
         slice_df = df[df[feature] == value].copy()
@@ -58,6 +65,7 @@ def performance_on_slices(model, df, feature, categorical_features, encoder, lab
         results.append({"feature": feature, "value": value,
                         "precision": p, "recall": r, "fbeta": f})
     return results
+
 
 if __name__ == "__main__":
     df = load_data("data/census_clean.csv")

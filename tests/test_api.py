@@ -1,14 +1,17 @@
 from fastapi.testclient import TestClient
 import sys
-sys.path.insert(0, ".")
 from main import app
+sys.path.insert(0, ".")
+
 
 client = TestClient(app)
+
 
 def test_get_root():
     r = client.get("/")
     assert r.status_code == 200
     assert "message" in r.json()
+
 
 def test_post_predict_above_50k():
     payload = {
@@ -22,6 +25,7 @@ def test_post_predict_above_50k():
     r = client.post("/predict", json=payload)
     assert r.status_code == 200
     assert r.json()["prediction"] in ["<=50K", ">50K"]
+
 
 def test_post_predict_below_50k():
     payload = {
