@@ -1,6 +1,6 @@
 import requests
 
-url = "https://TU-APP.onrender.com/predict"
+url = "https://census-project-7yl0.onrender.com/predict"
 
 payload = {
     "age": 37, "workclass": "Private", "fnlgt": 280464,
