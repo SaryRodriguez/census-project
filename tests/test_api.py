@@ -11,6 +11,7 @@ def test_get_root():
     r = client.get("/")
     assert r.status_code == 200
     assert "message" in r.json()
+    assert r.json()["message"] == "Welcome to the Census Salary Prediction API!"
 
 
 def test_post_predict_above_50k():

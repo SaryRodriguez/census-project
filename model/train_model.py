@@ -67,6 +67,14 @@ def performance_on_slices(model, df, feature, categorical_features,
     return results
 
 
+def load_model(model_path, encoder_path):
+    with open(model_path, "rb") as f:
+        model = pickle.load(f)
+    with open(encoder_path, "rb") as f:
+        encoder = pickle.load(f)
+    return model, encoder
+
+
 if __name__ == "__main__":
     df = load_data("data/census_clean.csv")
     train, test = train_test_split(df, test_size=0.2, random_state=42)
