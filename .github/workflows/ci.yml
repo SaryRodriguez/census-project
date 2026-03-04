@@ -14,8 +14,7 @@ jobs:
           python-version: "3.8"
 
       - name: Install dependencies
-        run: |
-          pip install fastapi uvicorn scikit-learn pandas pytest flake8 pydantic requests
+        run: pip install -r requirements.txt
 
       - name: Run flake8
         run: flake8 . --max-line-length=88 --exclude=.git,__pycache__
